@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JpaBuddyIdeaProjectConfig">
+    <option name="newEntityIdStrategy" value="Identity" />
+  </component>
+  <component name="PersistenceUnitSettings">
+    <persistence-units>
+      <persistence-unit moduleName="mscv-usuarios" name="Default">
+        <packages>
+          <package value="org.julio.springcloud.msvc.usuarios" />
+        </packages>
+      </persistence-unit>
+      <persistence-unit moduleName="mscv-cursos" name="Default">
+        <packages>
+          <package value="org.julio.springcloud.msvc.cursos" />
+        </packages>
+      </persistence-unit>
+    </persistence-units>
+  </component>
+</project>
