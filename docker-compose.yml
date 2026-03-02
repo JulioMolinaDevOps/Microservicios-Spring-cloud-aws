@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   microservicio-cursos:
-    image: juliomoli/mscv-cursos
+    image: juliomoli/mscv-cursos:v1
     container_name: cursos-container
     ports:
       - "8002:8002"
@@ -10,7 +10,7 @@ services:
       - microservicios-net
 
   microservicio-usuario:
-    image: juliomoli/mscv-alumnos
+    image: juliomoli/mscv-alumnos:v1
     container_name: usuario-container
     ports:
       - "8001:8001"
