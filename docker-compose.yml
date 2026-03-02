@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  microservicio-cursos:
+    image: mscv-cursos:latest
+    container_name: cursos-container
+    ports:
+      - "8002:8002"
+    networks:
+      - microservicios-net
+
+  microservicio-usuario:
+    image: mscv-usuarios:latest
+    container_name: usuario-container
+    ports:
+      - "8001:8001"
+    networks:
+      - microservicios-net
+
+networks:
+  microservicios-net:
+    driver: bridge
