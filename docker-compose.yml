@@ -1,22 +1,74 @@
-version: '3.8'
-
 services:
-  microservicio-cursos:
-    image: juliomoli/mscv-cursos:v1
-    container_name: cursos-container
-    ports:
-      - "8002:8002"
-    networks:
-      - microservicios-net
 
-  microservicio-usuario:
-    image: juliomoli/mscv-alumnos:v1
-    container_name: usuario-container
+  base_mysql:
+    image: juliomoli/mscv-mysql:latest
+    container_name: base-mysql
+    restart: always
+    volumes:
+      - mysql_data:/var/lib/mysql
     ports:
-      - "8001:8001"
+      - "3307:3306"
     networks:
-      - microservicios-net
+      - my_red
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      retries: 5
+
+  base_postgrest:
+    image: juliomoli/mscv-usuarios-posgrest:latest
+    container_name: base-postgres
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    networks:
+      - my_red
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      retries: 5
+
+  microservicio-cursos3:
+    image: juliomoli/mscv-cursos:v3
+    container_name: cursos-container3
+    restart: always
+    ports:
+      - "8082:8082"
+    depends_on:
+      base_mysql:
+        condition: service_healthy
+    networks:
+      - my_red
+
+  microservicio-usuario3:
+    image: juliomoli/mscv-usuarios:v3
+    container_name: usuario-container3
+    restart: always
+    ports:
+      - "8081:8081"
+    depends_on:
+      base_postgrest:
+        condition: service_healthy
+    networks:
+      - my_red
+
+  micro-front:
+    image: juliomoli/front-aws:latest
+    container_name: front-service
+    ports:
+      - "3000:80"
+    depends_on:
+      - microservicio-cursos3
+      - microservicio-usuario3
+    networks:
+      - my_red
 
 networks:
-  microservicios-net:
-    driver: bridge
+  my_red:
+    external: true
+
+volumes:
+  postgres_data:
+  mysql_data:

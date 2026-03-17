@@ -1,0 +1,6 @@
+.git
+.idea
+target/*.jar.original
+src/test
+*.md
+*.log
